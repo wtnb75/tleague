@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><title>Tリーグ日程 ical配布</title></head>
+<body>
+<p>卓球 Tリーグの日程表を予定表に取り込める形式に変換して提供しています。</p>
+<p>バグ報告、コメント等は<a href="http://github.com/wtnb75/tleague">wtnb75/tleague @ github</a>にissue/PRをどうぞ。</p>
+<ul>
+  <li><a href="./men.ics">男子</a> | <a href="./women.ics">女子</a></li>
+  {% for id in data.keys()|sort -%}
+  {%- if id != "" -%}
+  <li><a href="./{{id}}.ics">{{data[id]}}</a> ( <a href="./home/{{id}}.ics">home</a> | <a href="./away/{{id}}.ics">away</a> )</li>
+  {% endif %}
+  {%- endfor -%}
+</ul>
+</body>
+</html>
