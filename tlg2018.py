@@ -137,9 +137,11 @@ def getical(team):
         }
         mts = filter(lambda f: tidx[team] == f["sex"], tlg.matches)
         t = tidx[team]
-    else:
+    elif team in tlg.teammap:
         mts = filter(lambda f: team in (f["home-id"], f["away-id"]), tlg.matches)
         t = tlg.teammap[team]
+    else:
+        flask.abort(404)
     resp = flask.Response(tlg.convert(t, mts).to_ical().decode(
         "UTF-8"), mimetype="text/calendar")
     return resp
@@ -149,6 +151,8 @@ def getical(team):
 def getical_home(team):
     tlg.read()
     mts = filter(lambda f: team in (f["home-id"]), tlg.matches)
+    if team not in tlg.teammap:
+        flask.abort(404)
     t = tlg.teammap[team] + " ホーム"
     resp = flask.Response(tlg.convert(t, mts).to_ical().decode(
         "UTF-8"), mimetype="text/calendar")
@@ -159,6 +163,8 @@ def getical_home(team):
 def getical_away(team):
     tlg.read()
     mts = filter(lambda f: team in (f["away-id"]), tlg.matches)
+    if team not in tlg.teammap:
+        flask.abort(404)
     t = tlg.teammap[team] + " アウェイ"
     resp = flask.Response(tlg.convert(t, mts).to_ical().decode(
         "UTF-8"), mimetype="text/calendar")
