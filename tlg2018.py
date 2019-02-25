@@ -44,6 +44,13 @@ def geturl(ts, url, args):
     return geturl_cur(url, args)
 
 
+def toi(s):
+    try:
+        return int(s)
+    except ValueError:
+        return None
+
+
 class tlgconvert:
     schedule_url = "https://tleague.jp/match/"
 
@@ -69,7 +76,10 @@ class tlgconvert:
                     res = {}
                     for k in ["date", "time", "sex", "home", "away", "arena"]:
                         res[k] = m.find_class("cell-"+k)[0].text_content().strip()
-                    tmlink = m.find_class("cell-home")[0].xpath(".//a")[0].attrib["href"]
+                    try:
+                        tmlink = m.find_class("cell-home")[0].xpath(".//a")[0].attrib["href"]
+                    except Exception:
+                        continue
                     tmkey = os.path.basename(os.path.dirname(tmlink))
                     teammap[tmkey] = res["home"]
                     res["home-id"] = tmkey
@@ -87,10 +97,12 @@ class tlgconvert:
                     diff = res["datetime"]-datetime.datetime.now()
                     if diff.days <= 0:
                         result = fromstring(geturl_old(res["url"], {}))
-                        sc = [int(x.text_content().strip())
+                        sc = [toi(x.text_content().strip())
                               for x in result.find_class("cell-score")]
-                        res["homept"] = sc[0]
-                        res["awaypt"] = sc[1]
+                        if sc[0] is not None:
+                            res["homept"] = sc[0]
+                        if sc[1] is not None:
+                            res["awaypt"] = sc[1]
                     matches.append(res)
         self.teammap = teammap
         self.matches = matches
