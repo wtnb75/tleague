@@ -91,6 +91,7 @@ class tlgconvert:
 
                     rel = m.find_class("cell-result")[0].xpath(".//a")[0].attrib["href"]
                     res["url"] = urljoin(self.schedule_url, rel)
+                    res["uid"] = "match_%s@wtnb.mydns.jp.tleague" % (os.path.basename(rel))
                     res["time"] = res["time"].split()[0]
                     res["date"] = res["date"].split("（")[0]
                     res["datetime"] = self.getdatetime(res["date"], res["time"])
@@ -129,6 +130,7 @@ class tlgconvert:
             ev.add("dtend", endat)
             ev.add("location", "%(arena)s" % (m))
             ev.add("url", "%(url)s" % (m))
+            ev.add("uid", "%(uid)s" % (m))
             ical.add_component(ev)
         return ical
 
