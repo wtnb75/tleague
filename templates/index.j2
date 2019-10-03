@@ -8,7 +8,7 @@
   <li><a href="./men.ics">男子</a> | <a href="./women.ics">女子</a></li>
   {% for id in data.keys()|sort -%}
   {%- if id != "" -%}
-  <li><a href="./{{id}}.ics">{{data[id]}}</a> ( <a href="./home/{{id}}.ics">home</a> | <a href="./away/{{id}}.ics">away</a> )</li>
+  <li><a href="./{{id}}.ics">{{data[id]}}</a> ( <a href="./home/{{id}}.ics">home</a> | <a href="./away/{{id}}.ics">away</a> ) <a href="https://open-web-calendar.herokuapp.com/calendar.html?url=https%3A%2F%2Fwtnb.mydns.jp%2Ftleague%2F{{id}}.ics&language=jp">preview</a></li>
   {% endif %}
   {%- endfor -%}
 </ul>
